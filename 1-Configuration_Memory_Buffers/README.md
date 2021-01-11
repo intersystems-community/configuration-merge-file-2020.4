@@ -6,6 +6,8 @@ In this directory we have a simple example automating the most common operation 
 ## Considerations
 The solution, like all the rest found in the parallel directories, runs a *docker-compose* definition.
 The main file to view is the `config-merge-file.conf` that contains the parameters we want to configure our instance with.
+The *configuration merge file* can be called anything you want.
+
 Notable:  
 - Just like the `iris.cpf`, the **Configuration merge file**, uses the exact same fields as input parameters for configuring the IRIS instance. A merge operation is run for the user automatically.
 - We only have 2 main sections here for simplicity but any `iris.cpf` parameter can be configured
