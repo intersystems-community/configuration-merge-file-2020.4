@@ -1,0 +1,37 @@
+version: '3.8'
+# This compose runs 1 service 
+#
+# Durable %SYS directories will be in 
+# ./iris.sys.d
+#
+# A network is defined with to keep things simpler and hopefully avoid conflicts. The other examples will buil on this first example
+#
+networks:
+  iris-net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv4: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/16
+
+services:
+  iris:
+    # the IRIS Community Edition container from Docker Hub
+    image: store/intersystems/iris-community:2020.4.0.524.0
+    labels:
+      - "lbl.iris=Host(`iris.docker.localhost`)"
+    hostname: iris
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.11
+    ports:
+      - "9011:1972"
+      - "9012:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-file.conf
+    volumes:
+      - ./:/ISC
