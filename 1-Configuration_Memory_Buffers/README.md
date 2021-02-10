@@ -20,7 +20,7 @@ however, any `iris.cpf` parameter can be configured.
     - `docker run --rm -it intersystems/passwordhash:1.0`
 - In the **configuration merge file** we are changing 5 memory related parameters
   1. Global buffers
-  2. RO\outine buffers
+  2. Routine buffers
   3. Error log entries
   4. Gmheap and 
   5. the size of the lock table
@@ -28,7 +28,7 @@ however, any `iris.cpf` parameter can be configured.
 
 ## How to run it
 You can run the `start.sh` script to start the Docker Compose definition. Then check how the paremters specified in the `config-merge-file.conf` were effectively merged and used to configure the state of the IRIS instance specified in the `docker-compose.yml`.
-- check the iris.cpf of the running instance and 
+- check the `iris.cpf`  of the running instance and 
 - check the parameters via an IRIS session or via its system management portal
 
 Please note how the envrionment variable `ISC_CPF_MERGE_FILE`
