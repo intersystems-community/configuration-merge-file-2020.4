@@ -28,8 +28,11 @@ however, any `iris.cpf` parameter can be configured.
 
 ## How to run it
 You can run the `start.sh` script to start the Docker Compose definition. Then check how the paremters specified in the `config-merge-file.conf` were effectively merged and used to configure the state of the IRIS instance specified in the `docker-compose.yml`.
-- check the `iris.cpf`  of the running instance and 
+- check the `iris.cpf`  of the running instance
+  - from the $WDIR try `cat ./iris.sys.d/iris.cpf | more`  
 - check the parameters via an IRIS session or via its system management portal
+  - ` docker exec -it 1_iris_1 iris session iris`  
+  - `http://localhost:9012/csp/sys/utilhome.csp`  (_SYSTEM/SYS)
 
 Please note how the envrionment variable `ISC_CPF_MERGE_FILE`
 - triggers the merge operation and 

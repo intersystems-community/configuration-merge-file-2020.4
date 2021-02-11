@@ -4,7 +4,8 @@ version: '3.8'
 # Durable %SYS directories will be in 
 # ./iris.sys.d
 #
-# A network is defined with to keep things simpler and hopefully avoid conflicts. The other examples will buil on this first example
+# A network and its range is defined to keep things simpler and hopefully avoid conflicts. 
+# The other examples will buil on this one
 #
 networks:
   iris-net:
@@ -19,9 +20,8 @@ networks:
 services:
   iris:
     # the IRIS Community Edition container from Docker Hub
-    image: store/intersystems/iris-community:2020.4.0.524.0
-    labels:
-      - "lbl.iris=Host(`iris.docker.localhost`)"
+    #image: store/intersystems/iris-community:2020.4.0.524.0
+    image: containers.intersystems.com/intersystems/iris-community:2020.4.0.524.0
     hostname: iris
     init: true
     networks:
