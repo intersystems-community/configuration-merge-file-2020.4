@@ -12,12 +12,9 @@ Note, in the [Actions] section of the configuration definition, the database we 
 
 Because IRIS instances are self-aware and self-configuring, we provide a different configuration merge file for each instance telling them the initial role (primary or backup) that we expect them to start with. Those initial roles can subsequently be swapped as the service fails-over and back again. When those operations happen,roles are automatically set by the systems as they dialogue with eachother and coordinate things with the Arbiter.
 
-In the architecture... ??? - anything else here??
-
-
 Figuratively we end up with the following
 - architecture topology and
-- mirrored databases
+- mirrored database
 
 ```
 MYMIRROR mirror system 
