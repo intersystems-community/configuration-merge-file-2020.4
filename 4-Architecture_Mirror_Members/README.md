@@ -32,3 +32,6 @@ MYMIRROR mirror system
         ARBITER
                 leader election / coordinator
 ```
+## Requirements
+- a valid InterSystems IRIS key for mirroring
+
