@@ -8,7 +8,8 @@ version: '3.7'
 # ./iris.sys.d2
 #
 # A network is defined with a range of ip addresses to 
-# a) pin services to an IP and 
+# a) pin services to an IP (think of Kubernetes statefulSet) 
+# b) so that we know who does what  
 # b) to avoid conflict with local subnets
 #
 networks:
@@ -27,8 +28,6 @@ services:
     # image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
     image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
     command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
-    labels:
-      - "lbl.iris=Host(`iris.docker.localhost`)"
     hostname: iris1
     init: true
     networks:
@@ -47,8 +46,6 @@ services:
     #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
     image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
     command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
-    labels:
-      - "lbl.iris=Host(`iris.docker.localhost`)"
     hostname: iris2
     init: true
     networks:
