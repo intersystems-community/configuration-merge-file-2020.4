@@ -1,6 +1,6 @@
 # Defining a Shard Architecture Topology
 
-This CPF merge feature (see the two `.conf` files) shows how to implement an InterSystems IRIS shard architecture topology. The soloution has a series of **data nodes** that can grow horizontally. In this specifi example we have three fo them.
+This CPF merge feature (see the two `.conf` files) shows how to implement an InterSystems IRIS shard architecture topology. The soloution has a series of **data nodes** that can grow horizontally. In this specific example we have three of them.
 
 The first node of a shard cluster is always special and we call it the master node or  `NODE1` vs the remainders `DATA` nodes. However, you can leave it all to the system to figure it out and configure the cluster accodringly by using the `AUTO` option.
 
@@ -16,7 +16,7 @@ The definition in the `.conf' files is very simple
 - Subsequent shard *data* instances as
   - `ShardRole=auto`
   - `ShardClusterURL=IRIS://10.0.0.10:1972/IRISCLUSTER`
-    - we basically decided at priori that the first serive is the first master node.
+    - we basically decided at priori that the first service is the first master node.
 
 Please note how the sharding manager creates an *IRISCLUSTER* namespace that is avialable across the whole cluster for your use.
 
@@ -30,6 +30,7 @@ NODE1 instance
 DATA  instance
         Sharded Namespace                        
                 IRISCLUSTER
+                
 DATA  instance
         Sharded Namespace                        
                 IRISCLUSTER
