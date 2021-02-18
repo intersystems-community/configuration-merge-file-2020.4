@@ -1,0 +1,84 @@
+version: '3.7'
+# This compose runs 3 services: 
+# - 3 x IRIS instances as 3 shard data nodes and also primary members of their relative mirror with
+# - 3 x IRIS instances as backup members 
+#
+# Durable %SYS directories will be in 
+# ./iris.sys.d0
+# ./iris.sys.d1
+# ./iris.sys.d2 
+#
+# A network is defined with a range of ip addresses to 
+# a) pin services to an IP (think of Kubernetes statefulSet) 
+# b) so that we know who does what  
+# b) to avoid conflict with local subnets
+#
+networks:
+  iris-net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv4: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/16
+
+services:
+  iris-0:
+    # IRIS 2020.4 based container
+    # image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
+    image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
+    command: ["--key", "/ISC/iris.key"]
+    hostname: iris-0
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.10
+    ports:
+      - "9011:1972"
+      - "9012:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d0
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-Node1-instance.conf
+    volumes:
+      - ./:/ISC
+
+  iris-1:
+    #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
+    image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
+    command: ["--key", "/ISC/iris.key"]
+    hostname: iris-1
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.11
+    ports:
+      - "9021:1972"
+      - "9022:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d1
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-Data-instance.conf
+    volumes:
+     - ./:/ISC
+    depends_on: 
+      - iris-0
+      
+  iris-2:
+    #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
+    image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
+    command: ["--key", "/ISC/iris.key"]
+    hostname: iris-2
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.12
+    ports:
+      - "9031:1972"
+      - "9032:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d2
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-Data-instance.conf
+    volumes:
+     - ./:/ISC
+    depends_on: 
+      - iris-0
