@@ -7,6 +7,9 @@ version: '3.7'
 # ./iris.sys.d0
 # ./iris.sys.d1
 # ./iris.sys.d2 
+# ./iris.sys.d3
+# ./iris.sys.d4
+# ./iris.sys.d5
 #
 # A network is defined with a range of ip addresses to 
 # a) pin services to an IP (think of Kubernetes statefulSet) 
@@ -24,12 +27,13 @@ networks:
         - subnet: 10.0.0.0/16
 
 services:
-  iris-0:
+  # shard mirror 1
+  iris-0-0:
     # IRIS 2020.4 based container
     # image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
     image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
-    command: ["--key", "/ISC/iris.key"]
-    hostname: iris-0
+    command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
+    hostname: iris-0-0
     init: true
     networks:
       iris-net:
@@ -43,11 +47,11 @@ services:
     volumes:
       - ./:/ISC
 
-  iris-1:
+  iris-0-1:
     #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
     image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
-    command: ["--key", "/ISC/iris.key"]
-    hostname: iris-1
+    command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
+    hostname: iris-0-1
     init: true
     networks:
       iris-net:
@@ -61,13 +65,14 @@ services:
     volumes:
      - ./:/ISC
     depends_on: 
-      - iris-0
-      
-  iris-2:
+      - iris-0-0
+  
+  # shard mirror 2
+  iris-1-0:
     #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
     image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
-    command: ["--key", "/ISC/iris.key"]
-    hostname: iris-2
+    command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
+    hostname: iris-1-0 
     init: true
     networks:
       iris-net:
@@ -81,4 +86,73 @@ services:
     volumes:
      - ./:/ISC
     depends_on: 
-      - iris-0
+      - iris-0-0
+  
+  iris-1-1:
+    #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
+    image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
+    command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
+    hostname: iris-1-1 
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.13
+    ports:
+      - "9041:1972"
+      - "9042:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d3
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-Data-instance.conf
+    volumes:
+     - ./:/ISC
+    depends_on: 
+      - iris-0-0
+
+  # shard mirror 3
+  iris-2-0:
+    #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
+    image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
+    command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
+    hostname: iris-2-0 
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.14
+    ports:
+      - "9051:1972"
+      - "9052:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d4
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-Data-instance.conf
+    volumes:
+     - ./:/ISC
+    depends_on: 
+      - iris-0-0
+  
+  iris-2-1:
+    #image: containers.intersystems.com/intersystems/iris:2020.4.0.524.0
+    image: containers.intersystems.com/iscinternal/iris:2020.4.0.524.0_1
+    command: ["-b touch /home/irisowner/irissys/iscagent_console.log && /home/irisowner/irissys/startISCAgent.sh 2188", "--key", "/ISC/iris.key"]
+    hostname: iris-2-1 
+    init: true
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.15
+    ports:
+      - "9061:1972"
+      - "9062:52773"
+    environment:
+      - ISC_DATA_DIRECTORY=/ISC/iris.sys.d5
+      - ISC_CPF_MERGE_FILE=/ISC/config-merge-Data-instance.conf
+    volumes:
+     - ./:/ISC
+    depends_on: 
+      - iris-0-0
+   
+  arbiter:
+    image: containers.intersystems.com/intersystems/arbiter:2020.4.0.524.0 
+    command: ["-p 2188"]
+    networks:
+      iris-net:
+        ipv4_address: 10.0.0.100
+    hostname: arbiter
