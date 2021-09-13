@@ -27,5 +27,5 @@ Examples are provided in container format for DevOps engineers so that we can qu
   - [InterSystems Container Registry](https://containers.intersystems.com)
   - [Docker Hub](https://hub.docker.com/_/intersystems-iris-data-platform)
   - [InterSystems WRC Software Distribution Container page](https://wrc.intersystems.com/wrc/coDistContainers.csp)
-- for more advanced architecture topologies (mirroring and shards), an adequate InterSystems IRIS key is required
+- for more advanced architecture topologies (mirroring and shards), an adequate InterSystems IRIS key is required.
 
