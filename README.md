@@ -1,5 +1,7 @@
 # InterSystems *Configuration Merge Feature* examples as of InterSystems IRIS 2020.4
 
+-- All examples to be reviewed with the latest InterSystems IRIS version
+
 ## Introduction
 Each individual subdirectory represents an example of the various configurations and operational activities that are possible with the InterSystems IRIS **configuration merge feature**. The feature is also known as the *CPF merge file* or *configuration state file* as it ultimately allows you to declare the ultimate state of your InterSystems IRIS instances. 
 
